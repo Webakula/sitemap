@@ -72,6 +72,7 @@ trait ImagesProcess
             $path = $directory . $file;
             $loc  = $this->urlToSitemapFile($path);
 
+            
             $array = Arr::toArray($images);
 
             new ImagesValidator($array);

@@ -120,6 +120,7 @@ class Sitemap
         $separate = Config::get('sitemap.separate_files', false);
         $path     = $path ?: Config::get('sitemap.filename', 'sitemap.xml');
 
+
         $this->clearDirectory($path);
 
         $images = count($this->images);
@@ -128,6 +129,7 @@ class Sitemap
         if ($images) {
             ++$count;
         }
+
 
         if ($count > 1 && $separate) {
             return $this->saveMany($path);
@@ -170,7 +172,6 @@ class Sitemap
         $this->processManyItems('builders', $this->builders, $directory, $filename, $extension, __LINE__);
         $this->processManyItems('manual', $this->manuals, $directory, $filename, $extension, __LINE__);
         $this->processManyImages('images', $this->images, $directory, $filename, $extension, __LINE__);
-
         foreach ($this->sitemaps as $sitemap) {
             $xml->addItem($sitemap, 'sitemap');
         }
@@ -193,12 +194,14 @@ class Sitemap
         $line = $line ?: __LINE__;
         $this->existsMethod($method, $line);
 
+
         foreach ($items as $item) {
             if (empty($item)) {
                 continue;
             }
-
+            $directory = ltrim($directory, '.');
             $file = sprintf('%s-%s.%s', $filename, $this->index, $extension);
+
             $path = $directory . $file;
             $loc  = $this->urlToSitemapFile($path);
 
@@ -214,7 +217,7 @@ class Sitemap
                 ->loc($loc)
                 ->lastmod()
                 ->get();
-            dd('OYaEBU');
+
             $this->sitemaps->push($make_item);
 
             ++$this->index;
@@ -278,12 +281,11 @@ class Sitemap
      */
     protected function urlToSitemapFile($path): string
     {
-        $prefix = Str::finish($this->url, '/');
+        $prefix = Str::finish($this->url??'sitemaps', '');
 
         if (Url::isValid($prefix . $path)) {
             return $prefix . $path;
         }
-
         return $this->storage->url($prefix . $path);
     }
 

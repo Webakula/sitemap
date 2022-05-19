@@ -74,10 +74,13 @@ trait Helpers
             return;
         }
 
+
         $ext  = pathinfo($prefix, PATHINFO_EXTENSION);
         $path = Str::before($prefix, '.' . $ext);
 
-        $path = storage_path("app/public/{$path}*.{$ext}");
+
+        $path = public_path("sitemaps/{$path}*.{$ext}");
+
 
         foreach (glob($path) as $file) {
             unlink($file);
