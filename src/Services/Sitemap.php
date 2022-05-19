@@ -214,7 +214,7 @@ class Sitemap
                 ->loc($loc)
                 ->lastmod()
                 ->get();
-
+            dd('OYaEBU');
             $this->sitemaps->push($make_item);
 
             ++$this->index;
